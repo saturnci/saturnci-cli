@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require_relative "../lib/saturncicli/credential_loader"
 require_relative "../lib/saturncicli/credential"
 require_relative "../lib/saturncicli/client"
 require_relative "../lib/saturncicli/arguments"
@@ -7,9 +8,7 @@ require_relative "../lib/saturncicli/arguments"
 cache_file_path = File.join(Dir.home, ".saturnci", "cache.json")
 
 credential = SaturnCICLI::Credential.new(
-  host: ENV["SATURNCI_API_HOST"] || SaturnCICLI::Credential::DEFAULT_HOST,
-  user_id: ENV["USER_ID"],
-  api_token: ENV["USER_API_TOKEN"],
+  **SaturnCICLI::CredentialLoader.values(env: ENV),
   cache_file_path: cache_file_path
 )
 
