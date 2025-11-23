@@ -48,7 +48,7 @@ describe "ssh" do
       expect do
         command = "--test-runner abc123 ssh"
         client.ssh(test_runner)
-      end.to output("ssh -o StrictHostKeyChecking=no -i /tmp/saturnci/test-runner-abc123 root@111.11.11.1\n").to_stdout
+      end.to output("ssh -o StrictHostKeyChecking=accept-new -i /tmp/saturnci/test-runner-abc123 root@111.11.11.1\n").to_stdout
     end
   end
 
@@ -63,7 +63,7 @@ describe "ssh" do
       expect do
         command = "--test-runner abc123 ssh"
         client.ssh(test_runner)
-      end.to output("Waiting for IP address...\nssh -o StrictHostKeyChecking=no -i /tmp/saturnci/test-runner-abc123 root@111.11.11.1\n").to_stdout
+      end.to output("Waiting for IP address...\nssh -o StrictHostKeyChecking=accept-new -i /tmp/saturnci/test-runner-abc123 root@111.11.11.1\n").to_stdout
     end
   end
 

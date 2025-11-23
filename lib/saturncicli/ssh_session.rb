@@ -6,11 +6,22 @@ module SaturnCICLI
     end
 
     def connect
-      system(command)
+      system(*command_args)
     end
 
     def command
-      "ssh -o StrictHostKeyChecking=no -i #{@rsa_key_path} root@#{@ip_address}"
+      command_args.join(" ")
+    end
+
+    private
+
+    def command_args
+      [
+        "ssh",
+        "-o", "StrictHostKeyChecking=accept-new",
+        "-i", @rsa_key_path,
+        "root@#{@ip_address}"
+      ]
     end
   end
 end
