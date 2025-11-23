@@ -8,12 +8,29 @@ module SaturnCICLI
   class Client
     DEFAULT_LIMIT = 30
 
+    ALLOWED_COMMANDS = [
+      :test_runners,
+      :delete_test_runner,
+      :delete_all_test_runners,
+      :ssh_by_test_runner_id,
+      :test_suite_runs,
+      :runs,
+      :run
+    ].freeze
+
     def initialize(credential)
       @credential = credential
     end
 
     def execute(command)
-      send(*command)
+      method_name = command[0]
+      args = command[1..-1]
+
+      unless ALLOWED_COMMANDS.include?(method_name)
+        raise ArgumentError, "Unknown command: #{method_name}"
+      end
+
+      public_send(method_name, *args)
     end
 
     def test_runners
