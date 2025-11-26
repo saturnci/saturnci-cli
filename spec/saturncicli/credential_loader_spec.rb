@@ -12,23 +12,15 @@ describe SaturnCICLI::CredentialLoader do
 
   describe ".values" do
     describe "user_id" do
-      context "when SATURNCI_USER_ID env var is set" do
-        it "uses SATURNCI_USER_ID" do
-          env = { "SATURNCI_USER_ID" => "new_user_id", "USER_ID" => "old_user_id" }
+      context "when USER_ID env var is set" do
+        it "uses USER_ID env var" do
+          env = { "USER_ID" => "my_user_id" }
           result = described_class.values(env: env)
-          expect(result[:user_id]).to eq("new_user_id")
+          expect(result[:user_id]).to eq("my_user_id")
         end
       end
 
-      context "when SATURNCI_USER_ID env var is not set" do
-        it "uses legacy USER_ID env var" do
-          env = { "USER_ID" => "old_user_id" }
-          result = described_class.values(env: env)
-          expect(result[:user_id]).to eq("old_user_id")
-        end
-      end
-
-      context "when env vars are not set but credentials file has user_id" do
+      context "when USER_ID env var is not set" do
         it "uses user_id from credentials file" do
           File.write(credentials_file_path, { "user_id" => "file_user_id" }.to_json)
           env = {}
@@ -39,23 +31,15 @@ describe SaturnCICLI::CredentialLoader do
     end
 
     describe "api_token" do
-      context "when SATURNCI_API_TOKEN env var is set" do
-        it "uses SATURNCI_API_TOKEN" do
-          env = { "SATURNCI_API_TOKEN" => "new_token", "USER_API_TOKEN" => "old_token" }
-          result = described_class.values(env: env)
-          expect(result[:api_token]).to eq("new_token")
-        end
-      end
-
-      context "when SATURNCI_API_TOKEN env var is not set" do
-        it "uses legacy USER_API_TOKEN env var" do
+      context "when USER_API_TOKEN env var is set" do
+        it "uses USER_API_TOKEN env var" do
           env = { "USER_API_TOKEN" => "old_token" }
           result = described_class.values(env: env)
           expect(result[:api_token]).to eq("old_token")
         end
       end
 
-      context "when env vars are not set but credentials file has api_token" do
+      context "when USER_API_TOKEN env var is not set" do
         it "uses api_token from credentials file" do
           File.write(credentials_file_path, { "api_token" => "file_token" }.to_json)
           env = {}
@@ -66,15 +50,7 @@ describe SaturnCICLI::CredentialLoader do
     end
 
     describe "host" do
-      context "when SATURNCI_API_HOST env var is set" do
-        it "uses SATURNCI_API_HOST" do
-          env = { "SATURNCI_API_HOST" => "https://custom.saturnci.com" }
-          result = described_class.values(env: env)
-          expect(result[:host]).to eq("https://custom.saturnci.com")
-        end
-      end
-
-      context "when SATURNCI_API_HOST env var is not set but credentials file has host" do
+      context "when credentials file has a host set" do
         it "uses host from credentials file" do
           File.write(credentials_file_path, { "host" => "https://file.saturnci.com" }.to_json)
           env = {}
