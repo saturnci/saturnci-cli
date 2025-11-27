@@ -6,7 +6,7 @@ require_relative "test_runner"
 
 module SaturnCICLI
   class Client
-    DEFAULT_LIMIT = 30
+    DEFAULT_LIMIT = 50
 
     ALLOWED_COMMANDS = [
       :test_runners,
