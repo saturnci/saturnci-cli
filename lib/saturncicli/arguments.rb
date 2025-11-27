@@ -28,6 +28,9 @@ module SaturnCICLI
         [:run, run_id]
       when "test-suite-runs"
         [:test_suite_runs]
+      when "test-suite-run"
+        test_suite_run_id = @argv[1]
+        [:test_suite_run, test_suite_run_id]
       when nil
         [:test_runners]
       else

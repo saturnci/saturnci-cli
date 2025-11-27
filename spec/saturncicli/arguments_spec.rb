@@ -32,4 +32,12 @@ describe SaturnCICLI::Arguments do
       expect(arguments.command).to eq([:test_runners])
     end
   end
+
+  context "test-suite-run abc123" do
+    it "calls test_suite_run" do
+      argv = %w(test-suite-run abc123)
+      arguments = SaturnCICLI::Arguments.new(argv)
+      expect(arguments.command).to eq([:test_suite_run, "abc123"])
+    end
+  end
 end

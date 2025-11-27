@@ -14,6 +14,7 @@ module SaturnCICLI
       :delete_all_test_runners,
       :ssh_by_test_runner_id,
       :test_suite_runs,
+      :test_suite_run,
       :runs,
       :run
     ].freeze
@@ -96,6 +97,30 @@ module SaturnCICLI
 
       run_attrs.each do |key, value|
         puts "#{key}: #{value}"
+      end
+    end
+
+    def test_suite_run(test_suite_run_id)
+      response = get("test_suite_runs/#{test_suite_run_id}")
+      data = JSON.parse(response.body)
+
+      puts "Test Suite Run: #{data["id"]}"
+      puts "Status: #{data["status"]}"
+      puts "Branch: #{data["branch_name"]}"
+      puts "Commit: #{data["commit_hash"]}"
+      puts
+
+      if data["failed_tests"].empty?
+        puts "No failed tests."
+      else
+        puts "Failed Tests (#{data["failed_tests"].count}):"
+        puts
+        data["failed_tests"].each do |test|
+          puts "#{test["path"]}:#{test["line_number"]}"
+          puts "  #{test["description"]}"
+          puts "  #{test["exception_message"]}"
+          puts
+        end
       end
     end
 
