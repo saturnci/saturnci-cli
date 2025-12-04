@@ -6,20 +6,20 @@ module SaturnCICLI
 
     def command
       case @argv[0]
-      when "test-runners"
+      when "workers"
         case @argv[1]
         when nil
-          [:test_runners]
+          [:workers]
         when "delete"
           if @argv[2] == "--all"
-            [:delete_all_test_runners]
+            [:delete_all_workers]
           else
-            test_runner_ids = @argv[2..-1]
-            [:delete_test_runner, test_runner_ids]
+            worker_ids = @argv[2..-1]
+            [:delete_worker, worker_ids]
           end
         when "ssh"
-          test_runner_id = @argv[2]
-          [:ssh_by_test_runner_id, test_runner_id]
+          worker_id = @argv[2]
+          [:ssh_by_worker_id, worker_id]
         end
       when "runs"
         [:runs]
@@ -32,7 +32,7 @@ module SaturnCICLI
         test_suite_run_id = @argv[1]
         [:test_suite_run, test_suite_run_id]
       when nil
-        [:test_runners]
+        [:workers]
       else
         fail "Unknown argument \"#{@argv.join(" ")}\""
       end

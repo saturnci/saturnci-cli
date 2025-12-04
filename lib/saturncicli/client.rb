@@ -2,17 +2,17 @@ require "json"
 require_relative "api_request"
 require_relative "display/table"
 require_relative "ssh_session"
-require_relative "test_runner"
+require_relative "worker"
 
 module SaturnCICLI
   class Client
     DEFAULT_LIMIT = 50
 
     ALLOWED_COMMANDS = [
-      :test_runners,
-      :delete_test_runner,
-      :delete_all_test_runners,
-      :ssh_by_test_runner_id,
+      :workers,
+      :delete_worker,
+      :delete_all_workers,
+      :ssh_by_worker_id,
       :test_suite_runs,
       :test_suite_run,
       :runs,
@@ -34,8 +34,8 @@ module SaturnCICLI
       public_send(method_name, *args)
     end
 
-    def test_runners
-      response = get("test_runners")
+    def workers
+      response = get("workers")
 
       if response.code != "200"
         puts "Request failed"
@@ -43,23 +43,23 @@ module SaturnCICLI
         return
       end
 
-      test_runners = JSON.parse(response.body)
+      workers = JSON.parse(response.body)
 
       puts Display::Table.new(
-        resource_name: :test_runner,
-        items: test_runners[0..DEFAULT_LIMIT-1],
+        resource_name: :worker,
+        items: workers[0..DEFAULT_LIMIT-1],
       )
     end
 
-    def delete_test_runner(test_runner_ids)
-      test_runner_ids.each do |test_runner_id|
-        response = delete("test_runners/#{test_runner_id}")
+    def delete_worker(worker_ids)
+      worker_ids.each do |worker_id|
+        response = delete("workers/#{worker_id}")
         puts response.inspect
       end
     end
 
-    def delete_all_test_runners
-      response = delete("test_runner_collection")
+    def delete_all_workers
+      response = delete("worker_collection")
       puts response.inspect
     end
 
@@ -124,27 +124,27 @@ module SaturnCICLI
       end
     end
 
-    def ssh_by_test_runner_id(test_runner_id)
-      test_runner = TestRunner.new(
-        id: test_runner_id,
-        readiness_check_request: -> { get("test_runners/#{test_runner_id}") }
+    def ssh_by_worker_id(worker_id)
+      worker = Worker.new(
+        id: worker_id,
+        readiness_check_request: -> { get("workers/#{worker_id}") }
       )
 
-      ssh(test_runner)
+      ssh(worker)
     end
 
-    def ssh(test_runner)
-      until test_runner.refresh.ip_address
+    def ssh(worker)
+      until worker.refresh.ip_address
         puts "Waiting for IP address..."
-        sleep(TestRunner::WAIT_INTERVAL_IN_SECONDS)
+        sleep(Worker::WAIT_INTERVAL_IN_SECONDS)
       end
 
       ssh_session = SSHSession.new(
-        ip_address: test_runner.ip_address,
-        rsa_key_path: test_runner.rsa_key_path
+        ip_address: worker.ip_address,
+        rsa_key_path: worker.rsa_key_path
       )
 
-      response = patch("test_runners/#{test_runner.id}", { "terminate_on_completion" => false })
+      response = patch("workers/#{worker.id}", { "terminate_on_completion" => false })
       raise "Problem: #{response.inspect}" unless response.code == "200"
       puts ssh_session.command
       ssh_session.connect

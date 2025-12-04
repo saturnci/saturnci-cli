@@ -9,27 +9,27 @@ describe SaturnCICLI::Arguments do
     end
   end
 
-  context "test-runners delete abc123 def456" do
-    it "calls delete_test_runner" do
-      argv = %w(test-runners delete abc123 def456)
+  context "workers delete abc123 def456" do
+    it "calls delete_worker" do
+      argv = %w(workers delete abc123 def456)
       arguments = SaturnCICLI::Arguments.new(argv)
-      expect(arguments.command).to eq([:delete_test_runner, ["abc123", "def456"]])
+      expect(arguments.command).to eq([:delete_worker, ["abc123", "def456"]])
     end
   end
 
-  context "test-runners delete --all" do
-    it "calls delete_all_test_runners" do
-      argv = %w(test-runners delete --all)
+  context "workers delete --all" do
+    it "calls delete_all_workers" do
+      argv = %w(workers delete --all)
       arguments = SaturnCICLI::Arguments.new(argv)
-      expect(arguments.command).to eq([:delete_all_test_runners])
+      expect(arguments.command).to eq([:delete_all_workers])
     end
   end
 
-  context "test-runners" do
-    it "calls test_runners" do
-      argv = %w(test-runners)
+  context "workers" do
+    it "calls workers" do
+      argv = %w(workers)
       arguments = SaturnCICLI::Arguments.new(argv)
-      expect(arguments.command).to eq([:test_runners])
+      expect(arguments.command).to eq([:workers])
     end
   end
 

@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jasonswett@gmail.com"]
 
   spec.summary       = "Command-line interface for SaturnCI"
-  spec.description   = "CLI tool for interacting with SaturnCI test runners, builds, and test suite runs"
+  spec.description   = "CLI tool for interacting with SaturnCI workers, builds, and test suite runs"
   spec.homepage      = "https://github.com/saturnci/saturnci-cli"
   spec.license       = "MIT"
 

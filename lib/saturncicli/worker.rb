@@ -2,7 +2,7 @@ require "base64"
 require "tempfile"
 
 module SaturnCICLI
-  class TestRunner
+  class Worker
     WAIT_INTERVAL_IN_SECONDS = 1
     attr_reader :id
 

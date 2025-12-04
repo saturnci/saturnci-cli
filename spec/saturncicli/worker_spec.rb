@@ -1,9 +1,9 @@
 require "spec_helper"
-require_relative "../../lib/saturncicli/test_runner"
+require_relative "../../lib/saturncicli/worker"
 
-describe SaturnCICLI::TestRunner do
+describe SaturnCICLI::Worker do
   describe "#rsa_key_path" do
-    let!(:test_runner) do
+    let!(:worker) do
       response = double(
         "Response",
         body: { rsa_key: Base64.encode64("FAKE_RSA_KEY_CONTENT") }.to_json
@@ -11,20 +11,20 @@ describe SaturnCICLI::TestRunner do
 
       allow(response).to receive(:code).and_return("200")
 
-      SaturnCICLI::TestRunner.new(
+      SaturnCICLI::Worker.new(
         id: "abc123",
         readiness_check_request: -> { response }
       )
     end
 
     it "returns a path" do
-      test_runner.refresh
-      expect(test_runner.rsa_key_path).not_to be_nil
+      worker.refresh
+      expect(worker.rsa_key_path).not_to be_nil
     end
 
     it "puts the key in a file" do
-      test_runner.refresh
-      expect(File.read(test_runner.rsa_key_path)).to eq("FAKE_RSA_KEY_CONTENT")
+      worker.refresh
+      expect(File.read(worker.rsa_key_path)).to eq("FAKE_RSA_KEY_CONTENT")
     end
   end
 end

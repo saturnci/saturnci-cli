@@ -1,7 +1,7 @@
 require_relative "../../../lib/saturncicli/credential"
 require_relative "../../../lib/saturncicli/client"
 
-describe "test runner list" do
+describe "worker list" do
   before do
     body = [
       {
@@ -27,7 +27,7 @@ describe "test runner list" do
       }
     ].to_json
 
-    stub_request(:get, "#{SaturnCICLI::Credential::DEFAULT_HOST}/api/v1/test_runners")
+    stub_request(:get, "#{SaturnCICLI::Credential::DEFAULT_HOST}/api/v1/workers")
       .to_return(body: body, status: 200)
   end
 
@@ -47,7 +47,7 @@ describe "test runner list" do
     7abd6b84  2023-10-01 00:00:00  tr-f66f0860-secret-grape     Provisioning
     OUTPUT
     expect {
-      client.test_runners
+      client.workers
     }.to output(expected_output).to_stdout
   end
 end

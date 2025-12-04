@@ -25,20 +25,20 @@ export SATURNCI_API_HOST=http://localhost:3000
 
 ### Available Commands
 
-List test runners:
+List workers:
 ```bash
-saturnci test-runners
+saturnci workers
 ```
 
-Delete test runners:
+Delete workers:
 ```bash
-saturnci test-runners delete <test-runner-id> [<test-runner-id>...]
-saturnci test-runners delete --all
+saturnci workers delete <worker-id> [<worker-id>...]
+saturnci workers delete --all
 ```
 
-SSH into a test runner:
+SSH into a worker:
 ```bash
-saturnci test-runners ssh <test-runner-id>
+saturnci workers ssh <worker-id>
 ```
 
 List test suite runs:

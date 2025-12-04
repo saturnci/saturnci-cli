@@ -2,7 +2,7 @@ require_relative "column_definitions"
 
 module SaturnCICLI
   module Display
-    class TestRunnerTableColumnDefinitions < ColumnDefinitions
+    class WorkerTableColumnDefinitions < ColumnDefinitions
       define_columns do
         {
           "id" => {
